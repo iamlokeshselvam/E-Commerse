@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>LOGIN</title>
+    <link rel="stylesheet" href="/style.css">
+  </head>
+  <body>
+    <header >
+      <nav class="nav container">
+          <a href="#" class="logo">E-commerce</a>
+          <a href="./register" id="RLlink">Register</a>
+      </nav>   
+  </header>
+    <section class="container">
+      <div class="card">
+        <form action="/login" method="post" class="form">
+          <h2>LOGIN</h2>
+          <div>
+            <% if (msg) { %>
+              <p><%= msg %></p>
+            <% } %>
+           </div> 
+          <div class="form-box">
+            <label for="username">User Name</label><input type="text" name="username" required/>
+          </div>
+          <div class="form-box">
+            <label for="password">Password</label>
+            <input type="password" name="password"/>
+        </div>
+        <div class="btn-click">
+            <button type="submit">login</button>
+        </div>
+        <div class="create-account">
+          <a href="./register">don't have an account?</a>
+          <a href="./register">signup</a>
+        </div>
+        </form>
+      </div>
+    </section>
+  </body>
+</html>

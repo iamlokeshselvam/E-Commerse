@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>REGISTER</title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+    <header >
+        <nav class="nav container">
+            <a href="#" class="logo">E-commerce</a>
+            <a href="./login" id="RLlink">Login</a>
+        </nav>   
+    </header>
+    <section class="container">
+        <div class="card">
+          <form action="/register" method="post" class="form">
+            <h2>REGISTER</h2>
+
+           <div>
+            <% if (msg) { %>
+              <p><%= msg %></p>
+            <% } %>
+           </div>
+           
+            <div class="form-box">
+              <label for="username">User Name</label>
+              <input type="text" name="username" required/>
+            </div>
+            <div class="form-box">
+              <label for="email">email</label>
+              <input type="email"  name="email"/>
+          </div>
+            <div class="form-box">
+              <label for="password">Password</label>
+              <input type="password" name="password"/>
+          </div>
+            <div class="form-box">
+              <label for="Address">Address</label>
+            <textarea name="address" id="" cols="30" rows="5"></textarea>
+            </div>
+          <div class="btn-click">
+              <button type="submit">register</button>
+          </div>
+          <div class="create-account">
+            <a href="./login">already have an account?</a>
+            <a href="./login">login</a>
+          </div>
+          </form>
+        </div>
+      </section>
+
+</body>
+</html>

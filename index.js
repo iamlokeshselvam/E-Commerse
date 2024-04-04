@@ -136,16 +136,18 @@ const Product = require("./src/Product");
 const cartRoutes = require('./routes/cart');
 const axios = require('axios');
 const path = require('path');
+const redis = require('redis');
 
 const app = express();
 const port = 5000;
 
-app.use(express.static('public'));
-app.set('view engine', 'ejs');
+// Connect to Redis
+const redisClient = redis.createClient();
 
-app.set('views', path.join(__dirname, 'views'));
-app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
+// Handle Redis connection errors
+redisClient.on("error", function (error) {
+  console.error("Error connecting to Redis:", error);
+});
 
 // MongoDB connection setup
 mongoose.connect("mongodb+srv://iamlokeshselvam:iamlokeshselvam@cluster0.1wundwi.mongodb.net/myDatabase")
@@ -156,14 +158,46 @@ mongoose.connect("mongodb+srv://iamlokeshselvam:iamlokeshselvam@cluster0.1wundwi
     console.error("Error connecting to MongoDB:", err);
   });
 
+app.use(express.static('public'));
+app.set('view engine', 'ejs');
+app.set('views', path.join(__dirname, 'views'));
+app.use(express.json());
+app.use(express.urlencoded({ extended: false }));
+
+
+
+
+
+  
+
+// Middleware to cache products for 1 minute
+const cacheProducts = (req, res, next) => {
+  const cacheKey = 'products';
+  redisClient.get(cacheKey, (err, data) => {
+    if (err) {
+      console.error("Error fetching data from Redis:", err);
+      return next();
+    }
+    if (data !== null) {
+      res.send(JSON.parse(data));
+    } else {
+      next();
+    }
+  });
+};
+
+
 /// List Products route
-app.get('/products', async (req, res) => {
+app.get('/products', cacheProducts, async (req, res) => {
   try {
     const response = await axios.get('https://fakestoreapi.com/products');
     const products = response.data;
 
     // Delete existing products to avoid duplicate key errors
     await Product.deleteMany({});
+
+    /// Cache products for 1 minute
+    redisClient.set('products', JSON.stringify(products), 'EX', 60);
 
     // Store each product in MongoDB
     for (const product of products) {

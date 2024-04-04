@@ -11,6 +11,9 @@ document.addEventListener("DOMContentLoaded", () => {
   const fetchProducts = async () => {
     try {
       const response = await fetch("/products");
+      if (!response.ok) {
+        throw new Error(`Failed to fetch products: ${response.status} ${response.statusText}`);
+      }
       const data = await response.json();
       return data;
     } catch (error) {

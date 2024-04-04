@@ -4,19 +4,18 @@ const UserCart = require('../src/UserCart');
 
 // Add product to cart
 exports.addToCart = async (req, res) => {
-  const { userId, productId, quantity } = req.body;
+  const { userId, productId} = req.body;
 
   try {
-    const existingItem = await UserCart.findOne({ userId, productId });
+    const existingItem = await UserCart.findOne({ userId });
+console.log(existingItem);
+    // if (existingItem) {
+    //   await existingItem.save();
 
-    if (existingItem) {
-  
-      existingItem.quantity += quantity;
-      await existingItem.save();
-    } else {
+    // } else {
      
-      await UserCart.create({ userId, productId, quantity });
-    }
+    //   await UserCart.create({ userId, productId});
+    // }
 
     res.status(200).json({ success: true, message: 'Product added to cart' });
   } catch (error) {

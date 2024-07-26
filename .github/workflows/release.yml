@@ -1,0 +1,44 @@
+name: Release
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Node.js (optional, if you're using Node.js)
+        uses: actions/setup-node@v3
+        with:
+          node-version: '14' # Specify the Node.js version you're using
+
+      - name: Install dependencies (optional, if needed)
+        run: npm install # Or the command to install dependencies for your project
+
+      - name: Build (optional, if needed)
+        run: npm run build # Or the command to build your project
+
+      - name: Create Release
+        id: create_release
+        uses: actions/create-release@v1
+        with:
+          tag_name: ${{ github.sha }}
+          release_name: Release ${{ github.sha }}
+          draft: false
+          prerelease: false
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Upload Release Assets (optional, if needed)
+        uses: actions/upload-release-asset@v1
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./path/to/your/asset.zip
+          asset_name: your-asset.zip
+          asset_content_type: application/zip

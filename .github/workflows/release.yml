@@ -21,8 +21,8 @@ jobs:
       - name: Install dependencies (optional, if needed)
         run: npm install # Or the command to install dependencies for your project
 
-      - name: Build (optional, if needed)
-        run: npm run build # Or the command to build your project
+      # - name: Build (optional, if needed)
+      #   run: npm run build # Or the command to build your project
 
       - name: Create Release
         id: create_release
